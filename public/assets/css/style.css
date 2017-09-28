@@ -1,0 +1,20 @@
+img {
+  display: flex;
+  margin: auto;
+}
+
+body {
+  background-color: #ffd54f;
+}
+
+h1 {
+  text-align: center;
+}
+
+#submit, #form, h4 {
+  margin-top: 20px;
+}
+
+li {
+  list-style-position: inside;
+}

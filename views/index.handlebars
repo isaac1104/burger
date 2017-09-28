@@ -9,6 +9,10 @@
           {{#unless this.devoured}}
             <li>
               <p>{{this.burger_name}}</p>
+              <form action="/{{this.id}}?_method=PUT" method="post">
+                <input type="hidden" name="devoured" value="true">
+                <button type="submit">DEVOUR</button>
+              </form>
             </li>
           {{/unless}}
         {{/each}}

@@ -1,35 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
-const exphbs = require("express-handlebars");
-const mysql = require("mysql");
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  port: 8889,
-  database: "burgers_db"
-});
+const exphbs = require("express-handlebars");
+const routes = require("./controllers/burgers_controller.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-app.get("/", (req,res) => {
-  connection.query("SELECT * FROM burgers", (err,data) => {
-    if (err) throw err;
-    res.render("index", {burger: data});
-  });
-});
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post("/", (req,res) => {
-  connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.burgers], (err, result) => {
-    if (err) throw err;
-    res.redirect("/");
-  });
-});
+app.use(methodOverride("_method"));
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+
+app.set("view engine", "handlebars");
+
+app.use("/", routes);
 
 app.listen(port, () => {
   console.log("server listening on " + port);
